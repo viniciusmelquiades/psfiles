@@ -6,21 +6,26 @@ function Prompt {
 	if($gitBranch -ne $null -and $gitBranch -ne "") {
 		$gitBranch = " ($gitBranch)"
 	}
-	$pwd = $(Get-Location).ToString();
+
+	$pwd = $(Get-Location).ToString()
 	[system.environment]::currentdirectory = $pwd
+
 	$pwd = $pwd.Replace($env:userprofile, "~");
+
 	Write-Host "`nPS " -foreground Blue -nonewline
 	Write-Host $pwd -foreground Green -nonewline
-	Write-Host $gitBranch -foreground Red -nonewline
+	Write-Host $gitBranch -foreground Red -NoNewline
 	Write-Host ">" -foreground Blue -nonewline
-
-	return " "
+	" "
 }
 
 Add-Alias status 'git status'
 Add-Alias pull 'git pull -pt --all'
 Add-Alias push 'git push -u'
 Add-Alias fetch 'git fetch -pt --all'
+Add-Alias branch 'git branch'
+
+Add-Alias http 'Invoke-WebRequest -UseBasicParsing'
 
 function sync {
 	pull
@@ -52,19 +57,21 @@ function hardlink([string]$link, [string]$target) {
 }
 
 function Find-Command([Parameter(
-		Position=0,
-		Mandatory=$true,
-		ValueFromPipeline=$true,
-		ValueFromPipelineByPropertyName=$true)]
-		[String]$command) {
+	Position=0,
+	Mandatory=$true,
+	ValueFromPipeline=$true,
+	ValueFromPipelineByPropertyName=$true)]
+	[String]$command) {
+
 	return Get-Command $command | Split-Path
 }
 
-function Open([Parameter(
-		Position=0,
+function Open(
+	[Parameter(
+			Position=0,
 		ValueFromPipeline=$true,
 		ValueFromPipelineByPropertyName=$true)]
-		[String]$path) {
+	[String]$path) {
 	if([system.string]::IsNullOrWhiteSpace($path)){
 		explorer .
 		return;
@@ -78,9 +85,10 @@ function Open([Parameter(
 
 function Time() {
 	$sw = [Diagnostics.Stopwatch]::StartNew()
-	Invoke-Expression $($args -join ' ')
+	Invoke-Expression $($args -join ' ') | Out-Default
+
 	$sw.Stop()
-	$sw.elapsed
+	return $($sw.elapsed)
 }
 
 # Chocolatey profile
