@@ -1,14 +1,27 @@
 Import-Module posh-git
 Import-Module posh-alias
 
+if(($env:PSLastLocation -ne $null) -and (Test-Path $env:PSLastLocation -PathType Container)) {
+	Set-Location $env:PSLastLocation
+}
+
 function Prompt {
 	$gitBranch = git rev-parse --abbrev-ref HEAD 2> $null
 	if($gitBranch -ne $null -and $gitBranch -ne "") {
 		$gitBranch = " ($gitBranch)"
 	}
 
-	$pwd = $(Get-Location).ToString()
-	[system.environment]::currentdirectory = $pwd
+	$location = Get-Location
+	$pwd = $location.Path
+
+	$env:PSLastLocation = $pwd
+
+	if($location.Drive.Provider.Name -eq "FileSystem") {
+		[system.environment]::currentdirectory = $pwd
+	} elseif($pwd.Contains("::")) {
+		$pwd = $pwd -replace ".*\:\:"
+		[system.environment]::currentdirectory = $pwd
+	}
 
 	$pwd = $pwd.Replace($env:userprofile, "~");
 
