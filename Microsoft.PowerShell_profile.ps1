@@ -91,6 +91,14 @@ function Time() {
 	return $($sw.elapsed)
 }
 
+function Erase-History() {
+	Clear-History | Out-Null
+	#[system.reflection.assembly]::loadwithpartialname("System.Windows.Forms") | Out-Null
+	#[System.Windows.Forms.SendKeys]::Sendwait('%{F7 2}') | Out-Null
+	Remove-Item (Get-PSReadlineOption).HistorySavePath | Out-Null
+	[Microsoft.PowerShell.PSConsoleReadLine]::ClearHistory() | Out-Null
+}
+
 # Chocolatey profile
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
