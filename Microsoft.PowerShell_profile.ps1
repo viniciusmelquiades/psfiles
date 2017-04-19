@@ -110,6 +110,7 @@ function Erase-History() {
 	#[System.Windows.Forms.SendKeys]::Sendwait('%{F7 2}') | Out-Null
 	Remove-Item (Get-PSReadlineOption).HistorySavePath | Out-Null
 	[Microsoft.PowerShell.PSConsoleReadLine]::ClearHistory() | Out-Null
+	Clear-Host
 }
 
 # Chocolatey profile
