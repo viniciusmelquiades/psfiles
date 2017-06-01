@@ -6,7 +6,13 @@ if(($env:PSLastLocation -ne $null) -and (Test-Path $env:PSLastLocation -PathType
 }
 
 function Prompt {
-	$gitBranch = git rev-parse --abbrev-ref HEAD 2> $null
+	try {
+		$gitBranch = (git branch | Where-Object { $_.startsWith('*') }).TrimStart('* ') 2> $null
+	}
+	catch {
+		$gitBranch = $null;
+	}
+
 	if($gitBranch -ne $null -and $gitBranch -ne "") {
 		$gitBranch = " ($gitBranch)"
 	}
