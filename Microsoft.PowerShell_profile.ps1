@@ -2,6 +2,7 @@ $profileDir = Split-Path $profile
 
 Import-Module posh-alias
 Import-Module "$profileDir/Modules/posh-git/src/posh-git.psd1"
+Import-Module "$profileDir/Modules/posh-docker/posh-docker/posh-docker.psd1"
 
 if(($env:PSLastLocation -ne $null) -and (Test-Path $env:PSLastLocation -PathType Container)) {
 	Set-Location $env:PSLastLocation
