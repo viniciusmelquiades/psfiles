@@ -10,3 +10,7 @@
 	path = Modules/posh-docker
 	url = https://github.com/samneirinck/posh-docker.git
 	branch = master
+[submodule "z"]
+	path = modules/z
+	url = https://github.com/vincpa/z
+	branch = master
