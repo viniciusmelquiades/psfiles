@@ -41,10 +41,10 @@ function Prompt {
 
 	$pwd = $pwd.Replace($env:userprofile, "~");
 
-	Write-Host "`nPS " -foreground Blue -nonewline
+	Write-Host "`nPS " -foreground Gray -nonewline
 	Write-Host $pwd -foreground Green -nonewline
-	Write-Host $gitBranch -foreground Red -NoNewline
-	Write-Host ">" -foreground Blue -nonewline
+	Write-Host $gitBranch -foreground DarkGray -NoNewline
+	Write-Host ">" -foreground Gray -nonewline
 	" "
 }
 
